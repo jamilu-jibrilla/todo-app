@@ -53,7 +53,7 @@ body {
 
 }
 #todoInput {
-    padding-left: 2em;
+    padding-left: 1.8em;
 }
 .todo-input input {
     width: 100%;
@@ -189,12 +189,26 @@ li img {
     }
     .last-list-center-mobile {
         display: flex;
-        margin: 10px auto;
+        margin: .6em 0px 3em 0px;
         background-color: white;
         padding: 10px 4em;
         width: 100% ;
     }
     .lastNode {
         margin-top: 2em;
+        position: relative;
+        bottom: 3em;
+    }
+    #active{
+        margin-right: 1.2em;
+        margin-left: 1.2em;
+    }
+    .todo-input input {
+        width: 100%;
+        height: 50px;
+        letter-spacing: 1px;
+        font-weight: 700;
+        border: none;
+        outline: none;
     }
 }
