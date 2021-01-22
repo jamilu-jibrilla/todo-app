@@ -21,8 +21,10 @@ img.addEventListener("click", function() {
     document.querySelector(".wrapper").classList.toggle("night")
     document.querySelector(".todo-input").classList.toggle("bright-night")
     document.querySelector("ul").classList.toggle("bright-night")
+    document.querySelector(".last-list-center-mobile").classList.toggle("bright-night")
     inputField.classList.toggle("bright-night")
     document.querySelector(".header").classList.toggle("header-image-toggle")
+
 })
 
 //write a code that add li to todo list 
@@ -98,8 +100,9 @@ function filter(event) {
     })
     
 }
+
+// write code implements drag and drop functionality
 filterOptionsDesktop.addEventListener("click", filter)
 filterOptionsMobile.addEventListener("click", filter)
-
 
 
