@@ -3,7 +3,7 @@ let ul = document.querySelector("ul")
 let filterOptionsDesktop = document.querySelector(".last-list-center-desktop")
 let filterOptionsMobile = document.querySelector(".last-list-center-mobile")
 let inputField = document.getElementById("todoInput")
-let inputCheck = document.querySelectorAll("#checkbox")
+let inputCheck = document.querySelectorAll("input[type='checkbox']")
 let completed = document.querySelector("#completed")
 // night mode
 let Mode = document.querySelector("#mode").src
@@ -28,41 +28,63 @@ img.addEventListener("click", function() {
 })
 
 //write a code that add li to todo list 
-
-function addli(event) {
-    if(event.keyCode === 13 && inputField.value.length > 0) {
-        let ul = document.querySelector("ul")
-        let li = document.createElement("li")
-        let h5 = document.createElement("h5")
-        h5.append(inputField.value)
-        let input = document.createElement("input")
-        input.type = "checkbox"
-        input.addEventListener("click", function(){
-            input.parentElement.classList.toggle("lineThrough")
-        })
-        completed.addEventListener("click", function(){
-            if(input.checked) {
-                input.parentElement.remove()
-            }
-        })
-        li.append(input)
-        li.append()
-        li.append(h5)
-        ul.prepend(li)
-        
-        inputField.value = "" 
-        listSize()
-    }
+let storage
+if(localStorage.getItem('key')) {
+    storage = JSON.parse(localStorage.getItem('key'))
+} else {
+    storage = []
 }
 
-
+let storedData = JSON.parse(localStorage.getItem('key'))
+window.addEventListener('DOMContentLoaded', () => {
+    storedData.forEach(item => {
+       createLi(item)
+    })
+});
+function addli(event) {
+    if(event.keyCode === 13 && inputField.value.length > 0) {
+        createLi(inputField.value)
+    }
+}
 //write a code that line's through a list when its checkbox is ticked(completed)
     inputCheck.forEach(element => {
         element.addEventListener("click", function(){
             element.parentElement.parentElement.classList.toggle("lineThrough")
         })
     })
-input.addEventListener("keypress", addli)
+
+    function createLi(data) {
+        let li = document.createElement("li")
+        let h5 = document.createElement("h5")
+        h5.append(data)
+        if(data === inputField.value) {
+              //push to storage array and add current input to localstorage
+          storage.push(h5.textContent)
+          localStorage.setItem('key', JSON.stringify(storage))
+        //   
+        }
+        let input = document.createElement("input")
+        input.type = "checkbox"
+        input.addEventListener("click", function(){
+            input.parentElement.classList.toggle("lineThrough")
+        })
+        
+        completed.addEventListener("click", function(){
+            if(input.checked) {
+                input.parentElement.remove()
+                console.log(input.nextElementSibling.textContent)
+                let c = storedData.indexOf(input.nextElementSibling.textContent)
+                storage.splice(c, 1)
+                localStorage.setItem('key', JSON.stringify(storage))
+                input.checked = false
+            }
+        })
+        li.append(input)
+        li.append(h5)
+        ul.prepend(li)
+        inputField.value = ''
+        listSize()
+    }
 
 
 // write code that shows numbers of todo's left
@@ -82,7 +104,7 @@ function clearCompleted() {
         listSize()
     })
 }
-completed.addEventListener("click", clearCompleted)
+
 //write a code that filter's todo
 // ALL, ACTIVE AND COMPLETED
 
@@ -102,6 +124,8 @@ function filter(event) {
 }
 
 // write code implements drag and drop functionality
+input.addEventListener("keypress", addli)
+completed.addEventListener("click", clearCompleted)
 filterOptionsDesktop.addEventListener("click", filter)
 filterOptionsMobile.addEventListener("click", filter)
 
